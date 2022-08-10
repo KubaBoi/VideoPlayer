@@ -3,6 +3,9 @@
 logs/*.log
 logs/*.html
 
+/web/files/*
+!.gitkeep
+
 adminSettings.json
 securitySettings.json
 
