@@ -24,3 +24,12 @@ class VideosRepository(CheeseRepository):
 	def findByShowAndSeriesAndEpisode(showName, series, episode):
 		return CheeseRepository.query(showName=showName, series=series, episode=episode)
 
+	#@query "select case when exists
+	# (select * from videos where name=:name)
+	# then cast(1 as bit)
+	# else cast(0 as bit) end;";
+	#@return bool;
+	@staticmethod
+	def fileExists(name):
+		return CheeseRepository.query(name=name)
+

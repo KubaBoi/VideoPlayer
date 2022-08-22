@@ -1,5 +1,6 @@
 
 import cgi
+import os
 
 from Cheese.cheeseController import CheeseController as cc
 from Cheese.cheeseRepository import CheeseRepository as cr
@@ -16,6 +17,23 @@ class UploadController(cc):
         UploadController.deal_post_data(server)
 
         return cc.createResponse("<script>window.location='/'</script>")
+
+    #@get /load;
+    @staticmethod
+    def load(server, path, auth):
+        index = 0
+        cr.disableAutocommit()
+        for root, dirs, files in os.walk(ResMan.web("files")):
+            for file in files:
+                if (file == ".gitkeep"): continue
+
+                if (not VideosRepository.fileExists(file)):
+                    UploadController.saveNewFile(file, index)
+                    index += 1
+        cr.commit()
+        cr.enableAutocommit()
+
+        return cc.createResponse({"STATUS": f"{index} files has been updated"})
 
     # METHODS
 
