@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <title>Video upload</title>
+</head>
+<body>
+    <h1>Upload videos</h1>
+
+    <form action="/upload/videos" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="file" multiple><br><br>
+        <input type="submit" value="Nahrát soubor" name="submit">
+    </form>
+</body>
+</html>

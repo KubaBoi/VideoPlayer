@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Video player</title>
+</head>
+<body>
+
+	<a href="/">Back</a><br>
+    <video width="auto" height="auto" controls id="videoPlayer"> 
+    	<source src="" type="video/mp4" id="videoElem">
+    	Your browser does not support the video tag.
+    </video>
+	<br>
+	<button id="prevButt">Previous</button>
+	<button id="nextButt">Next</button>
+	<hr>
+	<div style="position:absolute;right:10px">
+		<button onclick="editVideo(this)">Edit</button><br>
+		<textarea id="editArea" style="visibility: hidden;" rows="8" cols="50"></textarea>	
+	</div>
+	<h1 id="videoName"></h1>
+	<h3 id="episode"></h3>
+	<h2 id="showName"></h2>
+	<h3 id="serieName"></h3>
+	<p id="description"></p>
+
+	<script src="https://kubaboi.github.io/CheeseFramework/public/scripts/cheese.js"></script>
+	<script src="./scripts/editVid.js"></script>
+
+    <script>
+		var videoName = "";
+		var video = null;
+
+		getVideo();
+    	function getVideo() {
+			let url = new URL(window.location.href);
+			videoName = url.searchParams.get("video");
+			document.getElementById("videoElem").setAttribute("src", `./files/${videoName}`);
+			document.getElementById("videoPlayer").load();
+			getVideoInfo();
+		} 
+
+		async function getVideoInfo() {
+			let resp = await callEndpoint("GET", `/video/getByName?name=${videoName}`);
+			if (resp.ERROR == null) {
+				video = resp.VIDEO;
+
+				document.getElementById("videoName").innerHTML = video.NAME;
+				document.getElementById("showName").innerHTML = video.SHOW_NAME;
+				document.getElementById("episode").innerHTML = "Episode: " + video.EPISODE;
+				document.getElementById("serieName").innerHTML = video.SERIES;
+				document.getElementById("description").innerHTML = video.DESCRIPTION;
+
+				getNeighbors();
+			}
+			else {
+				console.log(resp);
+			}
+		}
+
+		async function getNeighbors() {
+			let resp = await callEndpoint("GET", `/video/neighbors?id=${video.ID}`);
+			if (resp.ERROR == null) {
+				if (resp.NEIGHBORS.BEFORE == null) {
+					document.getElementById("prevButt").setAttribute("disabled", true);
+				}
+				else {
+					document.getElementById("prevButt").removeAttribute("disabled");
+					document.getElementById("prevButt").setAttribute("onclick", `window.location = "/video.html?video=${resp.NEIGHBORS.BEFORE.NAME}"`);
+				}
+
+				if (resp.NEIGHBORS.AFTER == null) {
+					document.getElementById("nextButt").setAttribute("disabled", true);
+				}
+				else {
+					document.getElementById("nextButt").removeAttribute("disabled");
+					document.getElementById("nextButt").setAttribute("onclick", `window.location = "/video.html?video=${resp.NEIGHBORS.AFTER.NAME}"`);
+				}
+			}	
+			else {
+				console.log(resp);
+			}
+		}
+    </script>
+
+
+</body>
+</html>
