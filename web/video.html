@@ -13,7 +13,7 @@
 	<br>
 	<button id="prevButt">Previous</button>
 	<button id="nextButt">Next</button>
-	<button onclick="document.getElementById('videoPlayer').currentTime = 1000;">Skip intro</button>
+	<!-- <button onclick="document.getElementById('videoPlayer').currentTime = 1000;">Skip intro</button> -->
 	<hr>
 	<div style="position:absolute;right:10px">
 		<button onclick="editVideo(this)">Edit</button><br>
@@ -31,13 +31,14 @@
     <script>
 		var videoName = "";
 		var video = null;
+		var videoPlayer = document.getElementById("videoPlayer");
 
 		getVideo();
     	function getVideo() {
 			let url = new URL(window.location.href);
 			videoName = url.searchParams.get("video");
 			document.getElementById("videoElem").setAttribute("src", `./files/${videoName}`);
-			document.getElementById("videoPlayer").load();
+			videoPlayer.load();
 			getVideoInfo();
 		} 
 
