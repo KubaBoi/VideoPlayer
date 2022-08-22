@@ -6,13 +6,14 @@
 <body>
 
 	<a href="/">Back</a><br>
-    <video width="auto" height="auto" controls id="videoPlayer"> 
+    <video controls id="videoPlayer"> 
     	<source src="" type="video/mp4" id="videoElem">
     	Your browser does not support the video tag.
     </video>
 	<br>
 	<button id="prevButt">Previous</button>
 	<button id="nextButt">Next</button>
+	<button onclick="document.getElementById('videoPlayer').currentTime = 1000;">Skip intro</button>
 	<hr>
 	<div style="position:absolute;right:10px">
 		<button onclick="editVideo(this)">Edit</button><br>
